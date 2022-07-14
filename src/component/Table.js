@@ -1,18 +1,26 @@
-import React from "react";
+import { useState } from "react";
 import "./table.css";
-const table = () => {
+const Table = () => {
+  const [row, setRow] = useState(9);
+  const [column, setColumn] = useState(9);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setRow(e.target.row.value);
+    setColumn(e.target.column.value);
+  };
   // ** Case table 1 **
-  let count = 10;
+  let count = row;
   const createTable = () => {
     let table = [];
-    for (let i = 1; i < 10; i++) {
+    for (let i = 0; i < row; i++) {
       count--;
       let item = [];
-      for (let j = 1; j < 10; j++) {
+      for (let j = 0; j < column; j++) {
         if (i === j) {
-          item.push(<td>{j}</td>);
+          item.push(<td>{j + 1}</td>);
         } else if (j === count) {
-          item.push(<td>{j} </td>);
+          item.push(<td>{j + 1} </td>);
         } else {
           item.push(<td>{``}</td>);
         }
@@ -23,46 +31,59 @@ const table = () => {
   };
 
   // ** Case table 2 **
-
-  // let count2 = 9;
-  // const createTable2 = () => {
-  //   let table = [];
-  //   for (let i = 0; i < 9; i++) {
-  //     count2--;
-  //     let item = [];
-  //     for (let j = 0; j < 9; j++) {
-  //       if (i === j) {
-  //         item.push(
-  //           <td>
-  //             {i},{j}
-  //           </td>
-  //         );
-  //       } else if (j === count2) {
-  //         item.push(
-  //           <td>
-  //             {i},{j}
-  //           </td>
-  //         );
-  //       } else {
-  //         item.push(<td>{``}</td>);
-  //       }
-  //     }
-  //     table.push(<tr>{item}</tr>);
-  //   }
-  //   return table;
-  // };
+  let count2 = row;
+  const createTableIndex = () => {
+    let tableIndex = [];
+    for (let i = 0; i < row; i++) {
+      count2--;
+      let item = [];
+      for (let j = 0; j < column; j++) {
+        if (i === j) {
+          item.push(
+            <td>
+              {i},{j}
+            </td>
+          );
+        } else if (j === count2) {
+          item.push(
+            <td>
+              {i},{j}
+            </td>
+          );
+        } else {
+          item.push(<td>{``}</td>);
+        }
+      }
+      tableIndex.push(<tr>{item}</tr>);
+    }
+    return tableIndex;
+  };
   return (
     <div>
+      <div className="form">
+        <form onSubmit={handleSubmit}>
+          <label>
+            Row
+            <input defaultValue={row} type="number" name="row"></input>
+          </label>
+          <br />
+          <label>
+            Column
+            <input defaultValue={column} type="number" name="column"></input>
+          </label>
+          <button type="submit">Save</button>
+        </form>
+      </div>
       {/* Case 1 */}
       <table>
         <tbody>{createTable()}</tbody>
       </table>
       {/* Case 2 */}
-      {/* <table>
-        <tbody>{createTable2()}</tbody>
-      </table> */}
+      <table>
+        <tbody>{createTableIndex()}</tbody>
+      </table>
     </div>
   );
 };
 
-export default table;
+export default Table;
